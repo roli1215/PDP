@@ -8,7 +8,6 @@ void write_cpu_result_to_file(int width, int height, float3 *result)
     if (file == NULL)
     {
         printf("Error opening file.\n");
-        return 1;
     }
 
     fprintf(file, "P3\n%d %d\n255\n", width, height);
