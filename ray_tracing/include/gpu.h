@@ -12,4 +12,4 @@
 
 void gpu_ray_tracing(int width, int height);
 
-#endif
+#endif // GPU_H

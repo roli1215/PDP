@@ -13,6 +13,7 @@ void gpu_ray_tracing(int width, int height)
     if (err != CL_SUCCESS)
     {
         printf("[ERROR] Error calling clGetPlatformIDs. Error code: %d\n", err);
+        return 0;
     }
 
     // Get device
@@ -21,12 +22,13 @@ void gpu_ray_tracing(int width, int height)
     err = clGetDeviceIDs(
         platform_id,
         CL_DEVICE_TYPE_GPU,
-        2,
+        1,
         &device_id,
         &n_devices);
     if (err != CL_SUCCESS)
     {
         printf("[ERROR] Error calling clGetDeviceIDs. Error code: %d\n", err);
+        return 0;
     }
 
     // Create OpenCL context
@@ -37,6 +39,7 @@ void gpu_ray_tracing(int width, int height)
     if (error_code != 0)
     {
         printf("Source code loading error!\n");
+        return 0;
     }
     cl_program program = clCreateProgramWithSource(context, 1, &kernel_code, NULL, NULL);
     const char options[] = "";
@@ -70,6 +73,7 @@ void gpu_ray_tracing(int width, int height)
         printf("Real size : %d\n", real_size);
         printf("Build log : %s\n", build_log);
         free(build_log);
+        return 0;
     }
     cl_kernel kernel = clCreateKernel(program, "ray_tracing", NULL);
     cl_mem pixel_buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, width * height * sizeof(cl_float3), NULL, &err);
@@ -104,10 +108,12 @@ void gpu_ray_tracing(int width, int height)
     if (err == CL_PROFILING_INFO_NOT_AVAILABLE)
     {
         printf("Profiling info not available!\n");
+        return 0;
     }
     else if (err != CL_SUCCESS)
     {
         printf("Error code: %d\n", err);
+        return 0;
     }
     clGetEventProfilingInfo(
         event,

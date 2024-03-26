@@ -5,7 +5,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include "float3.h"
+#include <math.h>
 
-void cpu_ray_tracing(int width, int height, int num_threads);
+typedef struct
+{
+    int start;
+    int end;
+    int width;
+    int height;
+} ThreadData;
 
-#endif
+
+float3* cpu_ray_tracing(int width, int height, int num_threads, float3* pixels);
+
+#endif // CPU_H
