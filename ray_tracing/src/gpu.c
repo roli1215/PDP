@@ -21,7 +21,7 @@ void gpu_ray_tracing(int width, int height)
     err = clGetDeviceIDs(
         platform_id,
         CL_DEVICE_TYPE_GPU,
-        1,
+        2,
         &device_id,
         &n_devices);
     if (err != CL_SUCCESS)
@@ -115,7 +115,7 @@ void gpu_ray_tracing(int width, int height)
         sizeof(endNs),
         &endNs,
         NULL);
-    printf("GPU Runtime: %lu ms\n", (endNs - startNs) / 1000000);
+    printf("GPU Runtime: %lu ns\n", (endNs - startNs));
 
     // Release the resources
     clReleaseKernel(kernel);

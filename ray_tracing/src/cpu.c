@@ -7,7 +7,7 @@ float3 ray_trace(int x, int y, int width, int height)
     float3 ray_origin = {0.0f, 0.0f, 0.0f};
     float3 ray_direction = {(float)x / (float)width - 0.5f, (float)y / (float)height - 0.5f, 1.0f};
 
-    float3 sphere_center = {0.0f, 0.0f, 1.0f};
+    float3 sphere_center = {0.0f, 1.0f, 1.0f};
     float sphere_radius = 0.5f;
 
     float3 oc = {ray_origin.x - sphere_center.x, ray_origin.y - sphere_center.y, ray_origin.z - sphere_center.z};
@@ -57,7 +57,7 @@ void *ray_tracing(void *arg)
     {
         int x = i % data->width;
         int y = i / data->width;
-        pixels[i] = ray_trace(x, y, data->width, data->height);
+        data->pixels[i] = ray_trace(x, y, data->width, data->height);
     }
     return NULL;
 }
@@ -85,18 +85,20 @@ float3 *cpu_ray_tracing(int width, int height, int num_threads, float3 *pixels)
         thread_data[i].end = (i + 1) * (width * height / num_threads);
         thread_data[i].width = width;
         thread_data[i].height = height;
+        thread_data[i].pixels = pixels;
         pthread_create(&threads[i], NULL, ray_tracing, &thread_data[i]);
     }
 
     for (int i = 0; i < num_threads; i++)
     {
+
         pthread_join(threads[i], NULL);
     }
 
     clock_t end = clock();
     double runtime = ((double)(end - start));
 
-    printf("CPU Runtime: %.0f ms\n", runtime);
+    printf("CPU Runtime: %.0f ns\n", runtime * 1000000);
 
     for (int j = height - 1; j >= 0; j--)
     {

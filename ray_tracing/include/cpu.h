@@ -14,6 +14,7 @@ typedef struct
     int end;
     int width;
     int height;
+    float3 *pixels;
 } ThreadData;
 
 
