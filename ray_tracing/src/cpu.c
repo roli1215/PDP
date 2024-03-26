@@ -22,7 +22,7 @@ float3 ray_trace(int x, int y, int width, int height)
     }
     else
     {
-        // calculate the intersection point
+        // calculate the inter  section point
         float t = (-b - sqrt(discriminant)) / (2.0f * a);
         float3 point = {ray_origin.x + t * ray_direction.x, ray_origin.y + t * ray_direction.y, ray_origin.z + t * ray_direction.z};
 
@@ -96,19 +96,18 @@ float3 *cpu_ray_tracing(int width, int height, int num_threads, float3 *pixels)
     clock_t end = clock();
     double runtime = ((double)(end - start));
 
-    printf("CPU Runtime: %f ms\n", runtime);
+    printf("CPU Runtime: %.0f ms\n", runtime);
 
     for (int j = height - 1; j >= 0; j--)
     {
         for (int i = 0; i < width; i++)
         {
-            pixels[i].x = (clamp(pixels[i].x / width, 0.0f, 1.0f));
-            pixels[i].y = (clamp(pixels[j].y / height, 0.0f, 1.0f));
-            pixels[i].z = (clamp(pixels[i].z, 0.0f, 1.0f));
-            printf("%d %d %d\n", (int)pixels[i].x, (int)pixels[i].y, (int)pixels[i].z);
+            int index = j * width + i;
+            pixels[index].x = (clamp(pixels[index].x / width, 0.0f, 1.0f));
+            pixels[index].y = (clamp(pixels[index].y / height, 0.0f, 1.0f));
+            pixels[index].z = (clamp(pixels[index].z, 0.0f, 1.0f));
         }
     }
-
 
     return pixels;
 }
